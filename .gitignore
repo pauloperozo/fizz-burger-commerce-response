@@ -1,0 +1,15 @@
+# Node
+node_modules
+
+# Env Variables
+.env*
+!.env.example
+
+# package-lock
+package-lock.json
+coverage/*
+
+# VScode
+.vscode
+tsconfig.json
+.vercel

@@ -1,0 +1,88 @@
+service: FizzBurgerChallenge
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: "20201221"
+  memorySize: 192
+  stage: ${opt:stage, 'api'}
+  region: ${opt:region, 'us-east-1'}
+  endpointType: REGIONAL
+  apiName: FizzBurgerChallenge API
+  environment:
+    DATABASE_URL: mongodb+srv://pauloperozocolombia:m9Z5EvQqfCu5yyiy@cluster0.5moeife.mongodb.net/test?retryWrites=true&w=majority
+    TIMEOUT: 7000
+    POOL : 10
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+    printOutput: true
+    cacheInvalidationRegex: 'node_modules/'
+
+functions:
+
+  Welcome:
+    handler: src/server/routes/welcome/index.handler
+    description: Bienvenida al api.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: get
+          path: /welcome
+          cors: true
+
+  FindAllProduct:
+    handler: src/server/routes/product/index.handler
+    description: Listar Productos.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: get
+          path: /product
+          cors: true
+
+  CreateProduct:
+    handler: src/server/routes/product/create.handler
+    description: Crear Un Producto.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: post
+          path: /product
+          cors: true
+
+  ReadProduct:
+    handler: src/server/routes/product/read.handler
+    description: Obtener Un Producto.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: get
+          path: /product/{id}
+          cors: true
+
+  UpdateProduct:
+    handler: src/server/routes/product/update.handler
+    description: Actulizar Producto.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: put
+          path: /product/{id}
+          cors: true
+
+  DeleteProduct:
+    handler: src/server/routes/product/delete.handler
+    description: Borrar Producto.
+    events:
+      - http:
+          integration: lambda-proxy
+          method: delete
+          path: /product/{id}
+          cors: true
+
+plugins:
+  - serverless-offline
+
+ 
